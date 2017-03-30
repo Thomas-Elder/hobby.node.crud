@@ -1,5 +1,6 @@
 var http = require('http');
 var port = 8080;
+var server;
 
 var db = [
     {id: 1, name: 'Tom'},
@@ -38,10 +39,16 @@ var Server = function(){
                 break;
         }
     });
+};
 
+Server.prototype.start = function(){
     server.listen(port, function(){
-        console.log('server listening on port:', port);
+        console.log('Server listening on port:', port);
     });
+};
+
+Server.prototype.stop = function(){
+    server.close();
 };
 
 module.exports = Server;
