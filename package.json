@@ -2,10 +2,18 @@
   "name": "crud",
   "version": "1.0.0",
   "description": "Quick practice at creating a node-only crud api",
+  "repository" : { 
+    "type" : "git", 
+    "url" : "https://github.com/Thomas-Elder/hobby.node.crud.git"
+    },
+
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    },
   "author": "Thomas Elder",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.5.3"
+    }
 }
