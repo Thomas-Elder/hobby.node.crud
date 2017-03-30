@@ -13,15 +13,9 @@ server = http.createServer(function(request, response){
     switch (request.method) {
         case 'GET': 
             console.log('handle get request...');
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.write('<h1>Hello GET!</h1>');
 
-            response.write('<ul>');
-            db.forEach(function(record){
-                response.write('<li>' + 'id:' + record.id + 'name:' + record.name + '</li>');
-            });
-            response.write('</ul>');
-
+            response.writeHead(200, {'Content-Type': 'application/json'});
+            response.write(JSON.stringify(db));
             response.end();
             break;
 
