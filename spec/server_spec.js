@@ -4,7 +4,7 @@ var request = require('request');
 
 describe('server', function(){
   
-  var db = [
+  var database = [
     {id: 1, name: 'Tom'},
     {id: 2, name: 'Tim'},
     {id: 3, name: 'Tum'},
@@ -16,8 +16,8 @@ describe('server', function(){
   var server;
 
   beforeEach(function(done){
-    server = new Server(db);
-    server.start();
+    server = new Server(database);
+    server.start(port);
     done();
   });
 
@@ -28,6 +28,14 @@ describe('server', function(){
 
   describe('connection', function(){
     
+    it('should return 200 status code to a request for /', function(done){
+      
+      request.get(url + '/').on('response', function(response){
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+    });
+
     it('should return 200 status code to a request for /create', function(done){
       
       request.get(url + '/create').on('response', function(response){
@@ -59,6 +67,14 @@ describe('server', function(){
         done();
       });
     });
+
+    it('should return 404 status code to a request for /gibberish', function(done){
+      
+      request.get(url + '/gibberish').on('response', function(response){
+        expect(response.statusCode).toBe(404);
+        done();
+      });
+    });
   });
 
   describe('create', function(){
@@ -69,7 +85,7 @@ describe('server', function(){
 
     it('should return the full list of data to a request for /read', function(done){
 
-      var expected = db;
+      var expected = database;
 
       request.get(url + '/read').on('response', function(response){
         
