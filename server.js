@@ -2,53 +2,52 @@ var http = require('http');
 var port = 8080;
 var server;
 
-var db = [
-    {id: 1, name: 'Tom'},
-    {id: 2, name: 'Tim'},
-    {id: 3, name: 'Tum'},
-    {id: 4, name: 'Tem'},
-];
+var Server = function(db){
 
-var Server = function(){
+  server = http.createServer(function(request, response){
 
-    server = http.createServer(function(request, response){
+    switch(request.url) {
+        case '/create':
+          console.log('handle request for /create');
 
-        switch (request.method) {
-            case 'GET': 
-                console.log('handle get request...');
+          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.end();          
+          break;
+        case '/read':
+          console.log('handle request for /read');
 
-                response.writeHead(200, {'Content-Type': 'application/json'});
-                response.write(JSON.stringify(db));
-                response.end();
-                break;
+          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.write(JSON.stringify(db));
+          response.end();
+          break;
+        case '/update':
+          console.log('handle request for /update');
 
-            case 'POST':
-                console.log('handle post request...');
+          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.end();
+          break;
+        case '/delete':
+          console.log('handle request for /delete');
 
-                var body = "";
-                request.on('data', function(data){
-                    body += data;
-                });
-
-                request.on('end', function(){
-                    response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.write('<h1>Hello POST!</h1>');
-                    response.write('<p>You posted:'+ body + '</p>');
-                    response.end();
-                });
-                break;
-        }
-    });
+          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.end();
+          break;
+        default:
+          response.writeHead(404, {'Content-Type': 'application/json'});
+          break; 
+    }
+  });
 };
 
 Server.prototype.start = function(){
-    server.listen(port, function(){
-        console.log('Server listening on port:', port);
-    });
+
+  server.listen(port, function(){
+    console.log('Server listening on port:', port);
+  });
 };
 
 Server.prototype.stop = function(){
-    server.close();
+  server.close();
 };
 
 module.exports = Server;
