@@ -3,19 +3,20 @@ var Server = require('../server');
 var request = require('request');
 
 describe('server', function(){
-  
-  var database = [
-    {id: 1, name: 'Tom'},
-    {id: 2, name: 'Tim'},
-    {id: 3, name: 'Tum'},
-    {id: 4, name: 'Tem'},
-  ];
 
   var port = 8080;
   var url = 'http://localhost:' + port;
   var server;
 
   beforeEach(function(done){
+
+    var database = [
+      {id: '1', name: 'Tom'},
+      {id: '2', name: 'Tim'},
+      {id: '3', name: 'Tum'},
+      {id: '4', name: 'Tem'},
+    ];
+
     server = new Server(database);
     server.start(port);
     done();
@@ -23,78 +24,28 @@ describe('server', function(){
 
   afterEach(function(done){
     server.stop();
+    delete database;
     done();
   });
 
-  describe('connection', function(){
-    
-    it('should return 200 status code to a request for /', function(done){
+  describe('PUT', function(){
+
+    it('should return status 200 for PUT requests', function(done){
       
-      request.get(url + '/').on('response', function(response){
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it('should return 200 status code to a request for /create', function(done){
+      var expected = {id:'5', name:'Tam'};
       
-      request.get(url + '/create').on('response', function(response){
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it('should return 200 status code to a request for /read', function(done){
-      
-      request.get(url + '/read').on('response', function(response){
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it('should return 200 status code to a request for /update', function(done){
-      
-      request.get(url + '/update').on('response', function(response){
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it('should return 200 status code to a request for /delete', function(done){
-      
-      request.get(url + '/delete').on('response', function(response){
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it('should return 404 status code to a request for /gibberish', function(done){
-      
-      request.get(url + '/gibberish').on('response', function(response){
-        expect(response.statusCode).toBe(404);
-        done();
-      });
-    });
-  });
-
-  describe('create', function(){
-
-  });
-
-  describe('read', function(){
-
-    it('should return the full list of data to a request for /read', function(done){
-
-      var expected = database;
-
-      request.get(url + '/read').on('response', function(response){
+      request.put(url, {form:expected}).on('response', function(response){
         
         var body = "";
-        response.on('data', function(data){
+        response
+        .on('error', function(error){
+          console.error(error);
+        })
+        .on('data', function(data){
           body += data;
-        });
-
-        response.on('end', function(){
+        })
+        .on('end', function(){
+          expect(response.statusCode).toBe(200);
           expect(body).toEqual(JSON.stringify(expected));
           done();
         });
@@ -102,11 +53,109 @@ describe('server', function(){
     });
   });
 
-  describe('update', function(){
+  describe('GET', function(){
 
+    it('should return all database records if no parameters are given', function(done){
+      
+      var expected = [
+        {id: '1', name: 'Tom'},
+        {id: '2', name: 'Tim'},
+        {id: '3', name: 'Tum'},
+        {id: '4', name: 'Tem'},
+      ];
+
+      request.get(url).on('response', function(response){
+        
+        var body = "";
+        response
+        .on('error', function(error){
+          console.error(error);
+        })
+        .on('data', function(data){
+          body += data;
+        })
+        .on('end', function(){
+          expect(response.statusCode).toBe(200);
+          expect(body).toEqual(JSON.stringify(expected));
+          done();
+        });
+      });
+    });
+
+    it('should return the record matching id with the given parameter', function(done){
+      
+      var expected ={id: '3', name: 'Tum'};
+
+      request.get(url, {form:{id:'3'}}).on('response', function(response){
+        
+        var body = "";
+        response
+        .on('error', function(error){
+          console.error(error);
+        })
+        .on('data', function(data){
+          body += data;
+        })
+        .on('end', function(){
+          expect(response.statusCode).toBe(200);
+          expect(body).toEqual(JSON.stringify(expected));
+          done();
+        });
+      });
+    });
   });
 
-  describe('delete', function(){
+  describe('POST', function(){
 
+    it('should return the updated record', function(done){
+
+      var expected = {id:'3', name:'Tam'};
+
+      request.post(url, {form:expected}).on('response', function(response){
+
+        var body = "";
+        response
+        .on('error', function(error){
+          console.error(error);
+        })
+        .on('data', function(data){
+          body += data;
+        })
+        .on('end', function(){
+          expect(response.statusCode).toBe(200);
+          expect(body).toEqual(JSON.stringify(expected));
+          done();
+        });
+      });
+    });
+  });
+
+  describe('DELETE', function(){
+
+    it('should return all database records', function(done){
+
+      var expected = [
+        {id: '1', name: 'Tom'},
+        {id: '2', name: 'Tim'},
+        {id: '4', name: 'Tem'},
+      ];
+
+      request.del(url, {form:{id:'3'}}).on('response', function(response){
+        
+        var body = "";
+        response
+        .on('error', function(error){
+          console.error(error);
+        })
+        .on('data', function(data){
+          body += data;
+        })
+        .on('end', function(){
+          expect(response.statusCode).toBe(200);
+          expect(body).toEqual(JSON.stringify(expected));
+          done();
+        });
+      });
+    });
   });
 });
