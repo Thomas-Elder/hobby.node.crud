@@ -28,6 +28,30 @@ describe('server', function(){
     done();
   });
 
+  describe('OPTIONS', function(){
+
+    it('should return status 200 for PUT requests', function(done){
+      
+      request( { method: 'GET', uri: url } )
+        
+      .on('response', function(response){
+        
+        var body = "";
+        response
+        .on('error', function(error){
+          console.error(error);
+        })
+        .on('data', function(data){
+          body += data;
+        })
+        .on('end', function(){
+          expect(response.statusCode).toBe(200);
+          done();
+        });
+      });
+    });
+  });
+
   describe('PUT', function(){
 
     it('should return status 200 for PUT requests', function(done){

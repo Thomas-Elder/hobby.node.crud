@@ -15,8 +15,21 @@ var Server = function(database){
 
   server = http.createServer(function(request, response){
 
+      var headers = {}; 
+      headers['Access-Control-Allow-Origin'] = '*';
+      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS';
+      headers['Content-Type'] = 'application/json';
+
     switch(request.method) {            
       
+      
+      case 'OPTIONS':
+
+        response.writeHead(200, headers);
+        response.end();
+
+        break;
+
       case 'PUT':
         
         var body = "";
