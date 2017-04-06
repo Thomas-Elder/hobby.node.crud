@@ -21,25 +21,40 @@
         console.log(xhr.responseText);
       };
 
-      // put
-      /*var formData = new FormData();
-      formData.append('id', '5');
-      formData.append('name', 'Tam');*/
+      // CREATE
+      // POST
       var data = {id: '5', name: 'Tam'};
+      xhr.open("post", "http://localhost:8080/");
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(data));
 
+      // READ
+      // GET specific record
+      data = {id: '5'};
       xhr.open("put", "http://localhost:8080/");
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify(data));
-      /*
-      xhr.open("GET", "http://localhost:8080/");
+
+      // READ
+      // GET all records
+      xhr.open("get", "http://localhost:8080/");
+      xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send();
-      
-      xhr.open("post", "http://localhost:8080/");
-      xhr.send();
+
+      // UPDATE
+      // PUT a specific record
+      data = {id: '3', name: 'Bum'};
+      xhr.open("put", "http://localhost:8080/");
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(data));
  
-      xhr.open("DELETE", "http://localhost:8080/");
-      xhr.send();
-      */
+      // DELETE
+      // DELETE a specific record
+      data = {id: '1'};
+      xhr.open("delete", "http://localhost:8080/");
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(data));
+
     </script>
   </head>
   <body>

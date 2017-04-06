@@ -33,7 +33,7 @@ var Server = function(database){
 
         break;
 
-      case 'PUT':
+      case 'POST':
         
         var body = "";
 
@@ -74,7 +74,7 @@ var Server = function(database){
             response.write(JSON.stringify(database));
             response.end();
           } else {
-            var id = queryString.parse(body).id;
+            var id = JSON.parse(body).id;
             var record = database.find(function(r){
               return r.id === id;
             });
@@ -85,10 +85,9 @@ var Server = function(database){
           }
         });
 
-        
         break;
 
-      case 'POST':
+      case 'PUT':
 
         var body = "";
 
@@ -100,7 +99,7 @@ var Server = function(database){
           body += data;
         })
         .on('end', function(){
-          var recordToUpdate = queryString.parse(body);
+          var recordToUpdate = JSON.parse(body);
 
           var record = database.find(function(r){
             return r.id === recordToUpdate.id;
@@ -126,7 +125,7 @@ var Server = function(database){
           body += data;
         })
         .on('end', function(){
-          var id = queryString.parse(body).id;
+          var id = JSON.parse(body).id;
 
           var index = database.findIndex(function(r){
             return r.id === id;
