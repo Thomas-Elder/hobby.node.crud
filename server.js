@@ -45,9 +45,8 @@ var Server = function(database){
           body += data;
         })
         .on('end', function(){
-          
-          var record = queryString.parse(body);
-          console.log(record);
+
+          var record = JSON.parse(body);
           
           database.push(record);
           response.writeHead(200, responseHeaders);

@@ -4,13 +4,28 @@
   <head>
     <script>
       var xhr = new XMLHttpRequest();
-      xhr.addEventListener("load", function(){console.log(this.responseText)});
+
+      xhr.onloadstart = function(){
+        console.log('Started loading data... ');
+      };
+
+      xhr.onprogress = function(event){
+        if (event.lengthComputable) {
+          console.log('Loaded ', event.loaded, ' bytes of ', event.total, ' so far.');
+        } else {
+          console.log('Length of data not computable');
+        }
+      };
+
+      xhr.onload = function() {
+        console.log(xhr.responseText);
+      };
 
       // put
       /*var formData = new FormData();
       formData.append('id', '5');
       formData.append('name', 'Tam');*/
-      var data = {'id': '5', 'name': 'Tam'};
+      var data = {id: '5', name: 'Tam'};
 
       xhr.open("put", "http://localhost:8080/");
       xhr.setRequestHeader('Content-Type', 'application/json');
