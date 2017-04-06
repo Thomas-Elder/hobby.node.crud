@@ -15,16 +15,20 @@ var Server = function(database){
 
   server = http.createServer(function(request, response){
 
-    var headers = {}; 
-    headers['Access-Control-Allow-Origin'] = '*';
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS';
-    headers['Content-Type'] = 'application/json';
+    var optionsHeaders = {}; 
+    optionsHeaders['Access-Control-Allow-Origin'] = '*';
+    optionsHeaders['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS';
+    optionsHeaders['Access-Control-Allow-Headers'] = 'Content-Type';
+
+    var responseHeaders = {};
+    responseHeaders['Access-Control-Allow-Origin'] = '*';
+    responseHeaders['Content-Type'] = 'application/json';
 
     switch(request.method) {            
           
       case 'OPTIONS':
 
-        response.writeHead(200, headers);
+        response.writeHead(200, optionsHeaders);
         response.end();
 
         break;
@@ -41,9 +45,12 @@ var Server = function(database){
           body += data;
         })
         .on('end', function(){
+          
           var record = queryString.parse(body);
+          console.log(record);
+          
           database.push(record);
-          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.writeHead(200, responseHeaders);
           response.write(JSON.stringify(record));
           response.end();
         });
@@ -64,7 +71,7 @@ var Server = function(database){
         .on('end', function(){
 
           if (body === '') {
-            response.writeHead(200, headers);
+            response.writeHead(200, responseHeaders);
             response.write(JSON.stringify(database));
             response.end();
           } else {
@@ -73,7 +80,7 @@ var Server = function(database){
               return r.id === id;
             });
 
-            response.writeHead(200, {'Content-Type': 'application/json'});
+            response.writeHead(200, responseHeaders);
             response.write(JSON.stringify(record));
             response.end();
           }
@@ -101,7 +108,7 @@ var Server = function(database){
           });
           record.name = recordToUpdate.name;
           
-          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.writeHead(200, responseHeaders);
           response.write(JSON.stringify(record));
           response.end();
         });
@@ -128,7 +135,7 @@ var Server = function(database){
 
           database.splice(index, 1);
           
-          response.writeHead(200, {'Content-Type': 'application/json'});
+          response.writeHead(200, responseHeaders);
           response.write(JSON.stringify(database));
           response.end();
         });
