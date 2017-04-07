@@ -100,7 +100,8 @@ var Server = function(database){
         })
         .on('end', function(){
           var recordToUpdate = JSON.parse(body);
-
+          console.log('recordtoupdate', recordToUpdate);
+          console.log('db;', database);
           var record = database.find(function(r){
             return r.id === recordToUpdate.id;
           });
