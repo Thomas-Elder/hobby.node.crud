@@ -30,9 +30,9 @@ describe('server', function(){
 
   describe('OPTIONS', function(){
 
-    it('should return status 200 for OPTIONS requests', function(done){
+    it('should return status 200, and have appropriate headers for OPTIONS requests', function(done){
       
-      request( { method: 'GET', uri: url } )
+      request( { method: 'OPTIONS', uri: url } )
         
       .on('response', function(response){
         
@@ -46,6 +46,9 @@ describe('server', function(){
         })
         .on('end', function(){
           expect(response.statusCode).toBe(200);
+          expect(response.headers['access-control-allow-origin']).toBe('*');
+          expect(response.headers['access-control-allow-methods']).toBe('POST, GET, PUT, DELETE, OPTIONS');
+          expect(response.headers['access-control-allow-headers']).toBe('Content-Type');
           done();
         });
       });
