@@ -30,7 +30,7 @@ describe('server', function(){
 
   describe('OPTIONS', function(){
 
-    it('should return status 200 for PUT requests', function(done){
+    it('should return status 200 for OPTIONS requests', function(done){
       
       request( { method: 'GET', uri: url } )
         
@@ -52,19 +52,19 @@ describe('server', function(){
     });
   });
 
-  describe('PUT', function(){
+  describe('POST', function(){
 
-    it('should return status 200 for PUT requests', function(done){
+    it('should return status 200 for POST requests', function(done){
       
       var expected = {id:'5', name:'Tam'};
       
-      request.put(url, {form:expected}).on('response', function(response){
+      request.post(url, {body:expected, json:true}).on('response', function(response){
         
         var body = "";
         response
         .on('error', function(error){
           console.error(error);
-        })
+        }) 
         .on('data', function(data){
           body += data;
         })
@@ -109,8 +109,8 @@ describe('server', function(){
     it('should return the record matching id with the given parameter', function(done){
       
       var expected ={id: '3', name: 'Tum'};
-
-      request.get(url, {form:{id:'3'}}).on('response', function(response){
+    
+      request.get(url, {body:{id:'3'}, json:true}).on('response', function(response){
         
         var body = "";
         response
@@ -135,7 +135,7 @@ describe('server', function(){
 
       var expected = {id:'3', name:'Tam'};
 
-      request.post(url, {form:expected}).on('response', function(response){
+      request.post(url, {body:expected, json:true}).on('response', function(response){
 
         var body = "";
         response
@@ -164,7 +164,7 @@ describe('server', function(){
         {id: '4', name: 'Tem'},
       ];
 
-      request.del(url, {form:{id:'3'}}).on('response', function(response){
+      request.del(url, {body:{id:'3'}, json:true}).on('response', function(response){
         
         var body = "";
         response
