@@ -37,6 +37,7 @@ describe('server', function(){
       .on('response', function(response){
         
         var body = "";
+
         response
         .on('error', function(error){
           console.error(error);
@@ -61,9 +62,12 @@ describe('server', function(){
       
       var expected = {id:'5', name:'Tam'};
       
-      request.post(url, {body:expected, json:true}).on('response', function(response){
+      request({ method: 'POST', uri: url, body:expected, json:true })
+      
+      .on('response', function(response){
         
         var body = "";
+
         response
         .on('error', function(error){
           console.error(error);
@@ -91,9 +95,12 @@ describe('server', function(){
         {id: '4', name: 'Tem'},
       ];
 
-      request.get(url).on('response', function(response){
+      request({ method: 'GET', uri: url })
+      
+      .on('response', function(response){
         
         var body = "";
+        
         response
         .on('error', function(error){
           console.error(error);
@@ -112,10 +119,13 @@ describe('server', function(){
     it('should return the record matching id with the given parameter', function(done){
       
       var expected ={id: '3', name: 'Tum'};
-    
-      request.get(url, {body:{id:'3'}, json:true}).on('response', function(response){
+      
+      request({ method: 'GET', uri: url, body:{id:'3'}, json:true })
+
+      .on('response', function(response){
         
         var body = "";
+
         response
         .on('error', function(error){
           console.error(error);
@@ -138,9 +148,12 @@ describe('server', function(){
 
       var expected = {id:'3', name:'Tam'};
 
-      request.post(url, {body:expected, json:true}).on('response', function(response){
+      request({ method: 'POST', uri: url, body:expected, json:true })
+      
+      .on('response', function(response){
 
         var body = "";
+
         response
         .on('error', function(error){
           console.error(error);
@@ -167,9 +180,12 @@ describe('server', function(){
         {id: '4', name: 'Tem'},
       ];
 
-      request.del(url, {body:{id:'3'}, json:true}).on('response', function(response){
+      request({ method: 'DELETE', uri: url, body:{id:'3'}, json:true })
+      
+      .on('response', function(response){
         
         var body = "";
+
         response
         .on('error', function(error){
           console.error(error);
