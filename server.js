@@ -4,8 +4,11 @@ var server;
 
 /**
  * Creates a server.
- * The server responds to PUT, GET, POST and DELETE http methods. These are used to 
+ * The server responds to POST, GET, PUT and DELETE http methods. These are used to 
  * Create, Read, Update and Delete respectively. 
+ * 
+ * Additionally the server responds to OPTIONS http method. This is used by browsers 
+ * to check whether a server supports CORS, and this one does.
  * 
  * @param {*} database - the database the server will access to respond to requests.
  *                       It is assumed that the database is an array of Objects with at least
