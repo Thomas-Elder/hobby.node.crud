@@ -5,18 +5,13 @@ var queryString = require('querystring');
 var server;
 
 /**
- * Creates a server.
- * The server responds to POST, GET, PUT and DELETE http methods. These are used to 
- * Create, Read, Update and Delete respectively. 
+ * Initialises the server and defines how requests are handled.
  * 
- * Additionally the server responds to OPTIONS http method. This is used by browsers 
- * to check whether a server supports CORS, and this one does.
- * 
- * @param {*} database - the database the server will access to respond to requests.
- *                       It is assumed that the database is an array of Objects with at least
- *                       and id attribute, which is a string.  
+ * @param {array} database - an array of objects to use as the database.
+ *                           The only necessary field in the array is an 'id' field
+ *                           which is used to identify and compare objects. 
  */
-var Server = function(database){
+var init = function(database){
 
   server = http.createServer(function(request, response){
 
@@ -150,13 +145,11 @@ var Server = function(database){
 };
 
 /**
- * Starts the server listening for requests on the specified port.
- * It logs when it's called the listen function on the specified port, 
- * and additionally when it's caught the 'listening' event.
+ * Starts the server listening on the specified port.
  * 
- * @param {int} port - the port number the server will listen on.
+ * @param {integer} port - the port number for the server to listen on.
  */
-Server.prototype.start = function(port){
+var start = function(port){
 
   server.listen(port, function(){
     console.log('Server starting... ');
@@ -168,11 +161,14 @@ Server.prototype.start = function(port){
 };
 
 /**
- * Stops the server listening. 
- * Calls server.close();
+ * Closes the server. 
  */
-Server.prototype.stop = function(){
+var stop = function(){
   server.close();
 };
 
-module.exports = Server;
+module.exports = {
+  init:init,
+  start:start,
+  stop:stop
+};

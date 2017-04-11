@@ -6,7 +6,7 @@ var database = [
     {id: '4', name: 'Tem'},
   ];
 var port = 8080;
-var Server = require('./server');
-var server = new Server(database);
+var server = require('./server');
 
+server.init(database);
 server.start(port);
