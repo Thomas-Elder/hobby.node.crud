@@ -1,12 +1,12 @@
 
-var Server = require('../server');
+var server = require('../server');
 var request = require('request');
 
 describe('server', function(){
 
   var port = 8080;
   var url = 'http://localhost:' + port;
-  var server;
+  //var server;
 
   beforeEach(function(done){
 
@@ -17,7 +17,7 @@ describe('server', function(){
       {id: '4', name: 'Tem'},
     ];
 
-    server = new Server(database);
+    server.init(database);
     server.start(port);
     done();
   });
